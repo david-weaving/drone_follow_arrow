@@ -5,8 +5,7 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 
-#code below is for retraining model
-
+#code below is simply for loading a model
 new_model = tf.keras.models.load_model('C:\\Users\\Administrator\\PycharmProjects\\HellWord\\models\\model_v1_8.h5')
 
 new_model.summary()

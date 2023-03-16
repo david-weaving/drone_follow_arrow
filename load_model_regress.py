@@ -5,7 +5,7 @@ from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
 import numpy as np
-
+#loads model for regression
 model = keras.models.load_model('C:\\Users\\Administrator\\PycharmProjects\\HellWord\\models\\model_regress_v1.h5')
 
 img_width = 960
