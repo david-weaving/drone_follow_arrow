@@ -17,8 +17,8 @@ test_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestest'
 # Define the image dimensions and load and preprocess the data
 img_width = 960
 img_height = 720
-x_train = []
-y_train = np.array([(5, 6, 100), (6, 5, 200)]) # IMPORTANT: make sure there are so many distance values as there are images.
+x_train = [] # images
+y_train = np.array([(5, 6, 100), (6, 5, 200)]) # IMPORTANT: make sure there are so many distance values as there are images. (x,y,z) x->distance arrow is (hyp), y->x pixel, z->ypixel
 x_val = []
 y_val = np.array([(3, 1, 100), (1, 4, 200)]) # IMPORTANT: make sure there are so many distance values as there are images.
 x_test = []
