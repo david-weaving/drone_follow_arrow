@@ -10,17 +10,17 @@ import cv2
 import os
 
 # Define the directory paths for the training, validation, and testing sets
-train_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows'
-val_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturesvali\\arrows'
-test_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestest'
+train_dir = 'C:\\Users\\david\\Resources\\Images\\train'
+val_dir = 'C:\\Users\\david\\Resources\\Images\\validation'
+#test_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestest'
 
 # Define the image dimensions and load and preprocess the data
 img_width = 960
 img_height = 720
 x_train = [] # images
-y_train = np.array([(5, 6, 100), (6, 5, 200)]) # IMPORTANT: make sure there are so many distance values as there are images. (x,y,z) x->distance arrow is (hyp), y->x pixel, z->ypixel
+y_train = np.array([107,107,107,107,107,107,107,107,107,107,107,127,127,127,127]) # IMPORTANT: make sure there are so many distance values as there are images. (x,y,z) x->distance arrow is (hyp), y->x pixel, z->ypixel
 x_val = []
-y_val = np.array([(3, 1, 100), (1, 4, 200)]) # IMPORTANT: make sure there are so many distance values as there are images.
+y_val = np.array([107,107,107,107,107,107,127,127]) # IMPORTANT: make sure there are so many distance values as there are images.
 x_test = []
 y_test = []
 
@@ -48,39 +48,33 @@ x_val = np.array(x_val)
 
 
 # Create the model
-model = keras.Sequential()
-model.add(Rescaling(scale=1. / 255, input_shape=(img_height, img_width, 1)))
-model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
-model.add(keras.layers.MaxPooling2D((2, 2)))
-model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(keras.layers.MaxPooling2D((2, 2)))
-model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(keras.layers.Flatten())
-model.add(keras.layers.Dense(64, activation='relu'))
-model.add(keras.layers.Dense(3))
+inputs = tf.keras.layers.Input(shape=(img_height, img_width, 1))
+x = tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+x = tf.keras.layers.MaxPooling2D((2, 2))(x)
+x = tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.MaxPooling2D((2, 2))(x)
+x = tf.keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+x = tf.keras.layers.MaxPooling2D((2, 2))(x)
+x = tf.keras.layers.Flatten()(x)
+x = tf.keras.layers.Dense(256, activation='relu')(x)
+x = tf.keras.layers.Dropout(0.5)(x)
+outputs = tf.keras.layers.Dense(1, activation='linear')(x)
 
-# Compile the model
-model.compile(optimizer=tf.optimizers.Adam(), loss='mean_squared_error', metrics=['mae'])
+model = keras.models.Model(inputs=inputs, outputs=outputs)
+
+model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mae'])
+
+model.summary()
 
 # Train the model
-history = model.fit(x_train, y_train, epochs=40, validation_data=(x_val, y_val))
+model.fit(x_train, y_train, batch_size=32, epochs=100, validation_split=0.2)
+
 
 def load_and_preprocess_image(image_path):
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    img = cv2.resize(img, (img_width, img_height))
+    img = cv2.resize(img, (img_width, img_height)) #width->960 height->720
     img = img.astype("float32") / 255.0
     img = np.expand_dims(img, axis=0)
     return img
 
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\200m_1677291510.0752733.jpg'
-x = load_and_preprocess_image(image_path)
-
-# Evaluate the model on the test set
-pred = model.predict(x)
-print(pred)
-
-z_pred = model.predict(x)[0,2] #predicts z value
-y_pred = model.predict(x)[0,1] #predicts y value
-x_pred = model.predict(x)[0,0] #predicts x value
-
-print(z_pred)
+model.save('C:\\Users\\david\\Resources\\Images\\models\\model.h5')
