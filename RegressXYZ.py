@@ -66,6 +66,18 @@ model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mae'])
 
 model.summary()
 
+# Shuffle the indices of the training and validation sets
+#train_indices = np.arange(len(x_train))
+#np.random.shuffle(train_indices)
+#val_indices = np.arange(len(x_val))
+#np.random.shuffle(val_indices)
+
+# Shuffle the images and corresponding labels together, but maintain their pairing
+#x_train = x_train[train_indices]
+#y_train = y_train[train_indices]
+#x_val = x_val[val_indices]
+#y_val = y_val[val_indices]
+
 # Train the model
 model.fit(x_train, y_train, batch_size=32, epochs=100, validation_split=0.2)
 
