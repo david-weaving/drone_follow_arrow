@@ -6,7 +6,7 @@ import cv2
 import os
 import numpy as np
 #loads model for regression
-model = keras.models.load_model('D:\\models\\model_regress_v2.h5')
+model = keras.models.load_model('D:\\models\\hyp_model_v1.h5')
 
 img_width = 960
 img_height = 720
@@ -21,7 +21,7 @@ def load_and_preprocess_image(image_path):
     
     return img
 
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestest\\arrow_189.5cm_1679116409.7563894.jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_294cm_1679895783.9676735.jpg'
 x = load_and_preprocess_image(image_path)
 
 # Evaluate the model on the test set
