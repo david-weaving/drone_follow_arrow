@@ -1,12 +1,11 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
 import numpy as np
 #loads model for regression
-model = keras.models.load_model('D:\\models\\hyp_model_v1.h5')
+model = keras.models.load_model('D:\\models\\hyp(inverse)_model_v2.h5')
 
 img_width = 960
 img_height = 720
@@ -21,10 +20,18 @@ def load_and_preprocess_image(image_path):
     
     return img
 
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_294cm_1679895783.9676735.jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_TESTcm_1680380816.3474493.jpg'
+
 x = load_and_preprocess_image(image_path)
 
 # Evaluate the model on the test set
 y_pred = model.predict(x)
-#y_pred = np.round(y_pred)
+#y_pred = np.round(y_pred,3)
+
+#y_pred = np.trunc(y_pred * 1000) / 1000
 print(y_pred)
+if np.trunc(y_pred * 10000) / 10000 <= 0.0034:
+    print("Too far, fly closer")
+
+else:
+    print(1/y_pred)

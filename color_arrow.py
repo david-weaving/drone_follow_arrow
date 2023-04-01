@@ -1,10 +1,10 @@
 from PIL import Image
 import time
+import numpy as np
+import os
+import cv2
 
-
- 
-
-
+arrow_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics'
 
 new_color = (500,20,300)
 
@@ -14,6 +14,7 @@ height = list(range(720))
 
 def arrow_color(picture):
     picture = Image.open(picture)
+    #picture = Image.fromarray(np.uint8(picture))  # convert NumPy array to PIL image
     array_o = [[],[]]
     array_b = [[],[]]
     array = [[], []]
@@ -54,13 +55,14 @@ def arrow_color(picture):
         y = array[1][i]
         #print(x,y)
         picture.putpixel((x,y), (112,128,144))
-    picture.save(f'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_543cm_{time.time()}.jpg')
+    picture.save(f'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_TESTcm_{time.time()}.jpg')
 
-    return picture
+    #return picture
+    #return np.array(picture)
 
-            
 
-img = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics\\arrow_160cm_1679702076.0492175.jpg'
+
+img = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics\\arrow_148cm_1680312827.204243.jpg'
 
 test_pixel = Image.open(img)
 

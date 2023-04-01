@@ -5,27 +5,58 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 
-#code below is for retraining model
+# Create train and validation data generators with random validation split
+train_data = keras.preprocessing.image.ImageDataGenerator(
+    rescale=1/191,
+    validation_split=0.2
+)
 
+# Load training and validation data from directory
+train_dataset = train_data.flow_from_directory(
+    'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain',
+    target_size=(200, 200),
+    batch_size=5,
+    class_mode='binary',
+    subset='training'  # Use only the training subset of data for training
+)
+validation_dataset = train_data.flow_from_directory(
+    'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain',
+    target_size=(200, 200),
+    batch_size=5,
+    class_mode='binary',
+    subset='validation'  # Use only the validation subset of data for validation
+)
+
+# Load pre-trained model
 new_model = tf.keras.models.load_model('C:\\Users\\Administrator\\PycharmProjects\\HellWord\\models\\model_v1_8.h5')
 
-train = keras.preprocessing.image.ImageDataGenerator(rescale=1/191)
-validation = keras.preprocessing.image.ImageDataGenerator(rescale=1/191)
-
-#batch size is subject to change
-train_dataset = train.flow_from_directory('C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain', target_size=(200, 200), batch_size=5, class_mode='binary')
-validation_dataset = train.flow_from_directory('C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturesvali', target_size=(200, 200), batch_size=5, class_mode='binary')
-
+# Print model summary
 new_model.summary()
 
-new_model.compile(loss='binary_crossentropy', optimizer= keras.optimizers.RMSprop(learning_rate=0.001), metrics=['accuracy'])
+# Compile model
+new_model.compile(
+    loss='binary_crossentropy',
+    optimizer=keras.optimizers.RMSprop(learning_rate=0.001),
+    metrics=['accuracy']
+)
 
-model_fit = new_model.fit(train_dataset, steps_per_epoch=10, epochs=100, validation_data=validation_dataset)
+# Train model on data
+model_fit = new_model.fit(
+    train_dataset,
+    steps_per_epoch=10,
+    epochs=100,
+    validation_data=validation_dataset
+)
 
+# Save the trained model
+if os.path.isfile('D:\\models\\model_v1_9.h5') is False:
+    new_model.save('D:\\models\\model_v1_9.h5')
+
+# Use the trained model to predict on test images
 dir_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestest'
 
 for i in os.listdir(dir_path):
-    img = keras.preprocessing.image.load_img(dir_path + '\\' + i, target_size=(200,200,3))
+    img = keras.preprocessing.image.load_img(dir_path + '\\' + i, target_size=(200, 200, 3))
     plt.imshow(img)
     plt.show()
     X = keras.preprocessing.image.img_to_array(img)
@@ -39,4 +70,3 @@ for i in os.listdir(dir_path):
     else:
         print('not arrow')
         print(val)
-    
