@@ -1,19 +1,14 @@
 
-# This will predict one image at a time
-# Regression or x,y,z
-# this might take a really, really long time to train
+# Used for training on just the hyp
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
-import matplotlib as plt
 
-# Define the directory paths for the training, validation, and testing sets
+# Training directory
 train_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows'
 
-# Define the image dimensions and load and preprocess the data
 img_width = 960
 img_height = 720
 x_train = [] # images
@@ -51,15 +46,15 @@ outputs = tf.keras.layers.Dense(1, activation='linear')(x)
 
 model = keras.models.Model(inputs=inputs, outputs=outputs)
 
-model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mae', 'mse']) # mse added, if it doesn't work, remove it.
+model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mae', 'mse'])
 
 model.summary()
 
-# Shuffle the indices of the training and validation sets
+# Shuffle training sets
 train_indices = np.arange(len(x_train))
 np.random.shuffle(train_indices)
 
-# Shuffle the training data while keeping the x and y elements aligned
+# Array of images and distance values are aligned while remaining shuffled
 x_train_shuffled = x_train[train_indices]
 y_train_shuffled = y_train[train_indices]
 
