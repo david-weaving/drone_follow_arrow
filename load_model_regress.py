@@ -5,7 +5,7 @@ import cv2
 import os
 import numpy as np
 #loads model for regression
-model = keras.models.load_model('D:\\models\\hyp(inverse)_model_v2.h5')
+model = keras.models.load_model('D:\\models\\hyp(inverse)_model_v5.h5')
 
 img_width = 960
 img_height = 720
@@ -20,7 +20,7 @@ def load_and_preprocess_image(image_path):
     
     return img
 
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_TESTcm_1680380816.3474493.jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\85.cm_1680453289.8369637.jpg'
 
 x = load_and_preprocess_image(image_path)
 
@@ -32,6 +32,7 @@ y_pred = model.predict(x)
 print(y_pred)
 if np.trunc(y_pred * 10000) / 10000 <= 0.0034:
     print("Too far, fly closer")
+    print(1/y_pred)
 
 else:
     print(1/y_pred)

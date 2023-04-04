@@ -55,14 +55,14 @@ def arrow_color(picture):
         y = array[1][i]
         #print(x,y)
         picture.putpixel((x,y), (112,128,144))
-    picture.save(f'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\arrow_TESTcm_{time.time()}.jpg')
+    picture.save(f'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\85.cm_{time.time()}.jpg')
 
     #return picture
     #return np.array(picture)
 
 
 
-img = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics\\arrow_148cm_1680312827.204243.jpg'
+img = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics\\85.cm_1680313048.2506518.jpg'
 
 test_pixel = Image.open(img)
 

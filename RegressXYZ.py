@@ -12,15 +12,12 @@ import matplotlib as plt
 
 # Define the directory paths for the training, validation, and testing sets
 train_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows'
-arrow_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\unfiltered_arrow_pics' # holds
 
 # Define the image dimensions and load and preprocess the data
 img_width = 960
 img_height = 720
 x_train = [] # images
-y_train = np.array([1/112,1/112,1/112,1/112,1/112,1/112,1/148,1/148,1/148,1/167,1/167,1/167,1/167,1/167,1/221,1/221,1/221,1/221,1/221,1/221,1/226,1/226,1/226,1/226,1/226,1/226,
-                    1/243,1/243,1/243,1/243,1/243,1/243,1/248,1/248,1/248,1/248,1/248,1/248,1/285,1/285,1/285,1/285,1/285,1/285,1/348,1/348,1/348,1/348,1/348,1/348,1/351,1/351,1/351,1/351,1/351,1/351,
-                    1/362,1/362,1/362,1/362,1/362,1/385,1/385,1/385,1/385,1/385,1/385,1/410,1/410,1/410,1/410,1/410,1/410,1/85,1/85,1/85]) # IMPORTANT: make sure there are so many distance values as there are images. (x,y,z) x->distance arrow is (hyp), y->x pixel, z->ypixel
+y_train = [] # corresponding distance values
 
         
 
@@ -33,8 +30,11 @@ for filename in os.listdir(train_dir):
         img = cv2.resize(img, (img_width, img_height))
         img = img.astype("float32") / 255.0
         x_train.append(img)
+        distance = float(filename.split('.')[0]) # this will pull distance from the file name
+        y_train.append(distance)
 
 x_train = np.array(x_train)
+y_train = np.array(y_train)
 
 # Create the model
 inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
@@ -59,7 +59,12 @@ model.summary()
 train_indices = np.arange(len(x_train))
 np.random.shuffle(train_indices)
 
-# Train the model
-model.fit(x_train, y_train, batch_size=32, epochs=20, validation_split=0.2)
+# Shuffle the training data while keeping the x and y elements aligned
+x_train_shuffled = x_train[train_indices]
+y_train_shuffled = y_train[train_indices]
 
-model.save('D:\\models\\hyp(inverse)_model_v2.h5')
+
+# Train the model
+model.fit(x_train_shuffled, y_train_shuffled, batch_size=32, epochs=30, validation_split=0.2)
+
+model.save('D:\\models\\hyp(inverse)_model_v5.h5')
