@@ -1,38 +1,44 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
-import numpy as np
-#loads model for regression
-model = keras.models.load_model('D:\\models\\hyp(inverse)_model_v5.h5')
+
+# Load the model for regression
+prev_model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
+model = keras.models.load_model('E:\\models\\regress_model_allthree.v2.h5')
 
 img_width = 960
 img_height = 720
 
+# Define a function to load and preprocess the image
 def load_and_preprocess_image(image_path):
     img = cv2.imread(image_path)
     img = cv2.resize(img, (img_width, img_height))
-    cv2.imshow('Image', img)
-    cv2.waitKey(0)
     img = img.astype("float32") / 255.0
     img = np.expand_dims(img, axis=0)
     
     return img
 
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\85.cm_1680453289.8369637.jpg'
+# Specify the path to the image
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\227_420_85.cm_1680565024 (1).jpg'
 
+# Load and preprocess the image
 x = load_and_preprocess_image(image_path)
 
-# Evaluate the model on the test set
-y_pred = model.predict(x)
-#y_pred = np.round(y_pred,3)
+# Predict the distance, x-pixel, and y-pixel values using the loaded model
+predictions = prev_model.predict(x)
+predictions_new = model.predict(x)
+distance, x_pixel, y_pixel = predictions
+distance_new, x_pixel_new, y_pixel_new = predictions_new
 
-#y_pred = np.trunc(y_pred * 1000) / 1000
-print(y_pred)
-if np.trunc(y_pred * 10000) / 10000 <= 0.0034:
-    print("Too far, fly closer")
-    print(1/y_pred)
+print('Previous Predicted distance:', distance[0])
+print('Previous Predicted x-pixel:', x_pixel[0])
+print('Previous Predicted y-pixel:', y_pixel[0])
 
-else:
-    print(1/y_pred)
+print (' ')
+
+print('New Predicted distance:', distance_new[0])
+print('New Predicted x-pixel:', x_pixel_new[0])
+print('New Predicted y-pixel:', y_pixel_new[0])
