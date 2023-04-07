@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
 
@@ -31,7 +30,7 @@ x_train = np.array(x_train)
 y_train = np.array(y_train)
 
 # Load the saved model for retraining
-model = keras.models.load_model('E:\\models\\regress_model_allthree.h5')
+model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
 
 # Shuffle the indices of the training and validation sets
 train_indices = np.arange(len(x_train))
@@ -42,7 +41,7 @@ x_train_shuffled = x_train[train_indices]
 y_train_shuffled = y_train[train_indices]
 
 # Retrain the model
-model.fit(x_train_shuffled, {'distance': y_train_shuffled[:, 0], 'x_pixel': y_train_shuffled[:, 1], 'y_pixel': y_train_shuffled[:, 2]}, batch_size=32, epochs=150, validation_split=0.2)
+model.fit(x_train_shuffled, {'distance': y_train_shuffled[:, 0], 'x_pixel': y_train_shuffled[:, 1], 'y_pixel': y_train_shuffled[:, 2]}, batch_size=32, epochs=250, validation_split=0.2)
 
 # Save the retrained model
-model.save('E:\\models\\regress_model_allthree.v2.h5')
+model.save('E:\\models\\regress_model_allthree.v2.1.h5')

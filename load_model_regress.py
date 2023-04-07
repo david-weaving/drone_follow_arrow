@@ -7,7 +7,7 @@ import os
 
 # Load the model for regression
 prev_model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
-model = keras.models.load_model('E:\\models\\regress_model_allthree.v2.h5')
+model = keras.models.load_model('E:\\models\\regress_model_allthree.v2.1.h5')
 
 img_width = 960
 img_height = 720
@@ -22,7 +22,7 @@ def load_and_preprocess_image(image_path):
     return img
 
 # Specify the path to the image
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\227_420_85.cm_1680565024 (1).jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\165_173_171.cm_1680733473 (1).jpg'
 
 # Load and preprocess the image
 x = load_and_preprocess_image(image_path)
