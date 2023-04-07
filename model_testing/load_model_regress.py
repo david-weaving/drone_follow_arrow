@@ -22,7 +22,7 @@ def load_and_preprocess_image(image_path):
     return img
 
 # Specify the path to the image
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\165_173_171.cm_1680733473 (1).jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\135_658_201.cm_1680565543 (1).jpg'
 
 # Load and preprocess the image
 x = load_and_preprocess_image(image_path)
