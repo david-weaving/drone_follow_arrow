@@ -6,7 +6,7 @@ from tensorflow import keras
 
 # Load the model for regression
 prev_model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
-model = keras.models.load_model('E:\\models\\regress_model_allthree.v2.1.h5')
+model = keras.models.load_model('D:\\models\\regress_model_allthree_v2.h5')
 
 img_width = 960
 img_height = 720

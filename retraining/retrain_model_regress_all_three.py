@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 import cv2
 import os
+import matplotlib.pyplot as plt
 
 # Define the directory paths for the training, validation, and testing sets
 train_dir = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows'
@@ -31,7 +32,6 @@ y_train = np.array(y_train)
 
 # Load the saved model for retraining
 model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
-
 # Shuffle the indices of the training and validation sets
 train_indices = np.arange(len(x_train))
 np.random.shuffle(train_indices)
@@ -41,7 +41,23 @@ x_train_shuffled = x_train[train_indices]
 y_train_shuffled = y_train[train_indices]
 
 # Retrain the model
-model.fit(x_train_shuffled, {'distance': y_train_shuffled[:, 0], 'x_pixel': y_train_shuffled[:, 1], 'y_pixel': y_train_shuffled[:, 2]}, batch_size=32, epochs=250, validation_split=0.2)
+history = model.fit(x_train_shuffled, {'distance': y_train_shuffled[:, 0], 'x_pixel': y_train_shuffled[:, 1], 'y_pixel': y_train_shuffled[:, 2]}, batch_size=32, epochs=100, validation_split=0.2)
+
+train_loss = history.history['loss']
+val_loss = history.history['val_loss']
 
 # Save the retrained model
-model.save('E:\\models\\regress_model_allthree.v2.1.h5')
+model.save('D:\\models\\regress_model_allthree_v2.h5')
+
+# Get the training and validation loss
+
+
+# Plot the training and validation loss
+epochs = range(1, len(train_loss) + 1)
+plt.plot(epochs, train_loss, 'bo-', label='Training loss')
+plt.plot(epochs, val_loss, 'ro-', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
