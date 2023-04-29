@@ -1,13 +1,12 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 import cv2
 import os
 
 # Load the model for regression
-prev_model = keras.models.load_model('D:\\models\\regress_model_allthree.h5')
-model = keras.models.load_model('E:\\models\\regress_model_allthree.v2.1.h5')
+prev_model = keras.models.load_model('D:\\models\\regress_model_allthree.h5') # this previous model is good at prediction close distances, bad at far
+model = keras.models.load_model('D:\\models\\regress_model_allthree_v2.h5') # this current model is good at predicting further distances, bad at close
 
 img_width = 960
 img_height = 720
@@ -22,7 +21,7 @@ def load_and_preprocess_image(image_path):
     return img
 
 # Specify the path to the image
-image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\135_658_201.cm_1680565543 (1).jpg'
+image_path = 'C:\\Users\\Administrator\\PycharmProjects\\HellWord\\picturestrain\\arrows\\184.cm_1680984979.6978347.jpg'
 
 # Load and preprocess the image
 x = load_and_preprocess_image(image_path)
